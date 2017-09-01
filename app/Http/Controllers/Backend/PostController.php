@@ -4,12 +4,33 @@ namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\User;
+use App\Post;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
     //
+    public $role_admin = 1;
+    public $role_leader = 2;
+    public $role_bus = 3;
+
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index() {
-        return view('backend.post.index');
+        $user_id = Auth::id();
+        $role = User::where('id', $user_id)->pluck('role');
+        if ($role[0] == $this->role_admin || $role[0] == $this->role_leader) {
+            $posts = Post::with('Type')->get();
+        } else {
+            $posts = Post::with('Type')->where('user_id', $user_id)->get();
+        }
+
+        return view('backend.post.index', compact('posts'));
     }
 
     public function create() {
