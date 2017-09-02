@@ -17,7 +17,7 @@ class PostsTableSeeder extends Seeder
 
         for ($i = 0; $i <= 50; $i++) {
             $post = new Post();
-            $users_id = 0;
+            $user_id = 1;
             $type = rand(1, 4);
             $status = rand(0, 1);
             $post->fill([
@@ -25,7 +25,7 @@ class PostsTableSeeder extends Seeder
                 'type' => $type,
                 'content' => '<p>' . $faker->realText(rand(50, 1000)) . '</p>',
                 'short_content' => '<p>' . $faker->realText(rand(20, 100)) . '</p>',
-                'users_id' => $users_id,
+                'user_id' => $user_id,
                 'status' => $status,
 
             ]);

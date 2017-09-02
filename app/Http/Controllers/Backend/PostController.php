@@ -24,10 +24,11 @@ class PostController extends Controller
     public function index() {
         $user_id = Auth::id();
         $role = User::where('id', $user_id)->pluck('role');
+
         if ($role[0] == $this->role_admin || $role[0] == $this->role_leader) {
-            $posts = Post::with('Type')->get();
+            $posts = Post::with('Type')->orderBy('id','DESC')->paginate(10);
         } else {
-            $posts = Post::with('Type')->where('user_id', $user_id)->get();
+            $posts = Post::with('Type')->orderBy('id','DESC')->where('user_id', $user_id)->paginate(10);
         }
 
         return view('backend.post.index', compact('posts'));

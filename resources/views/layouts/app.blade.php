@@ -16,6 +16,8 @@
     {{--font awesome--}}
     <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
 
+    @yield('css')
+
 </head>
 <body>
 <div id="app">
