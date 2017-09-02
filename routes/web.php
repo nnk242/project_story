@@ -27,5 +27,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/', 'Backend\PostController@index')->name('post');
         Route::get('create', 'Backend\PostController@create')->name('post.create');
         Route::post('postCreate', 'Backend\PostController@postCreate')->name('post.postCreate');
+        Route::post('ajaxCreateShortContent', 'Backend\PostController@ajaxCreateShortContent')->name('ajax.createShortContent');
+        Route::post('ajaxCreateContent', 'Backend\PostController@ajaxCreateContent')->name('ajax.createContent');
     });
 });

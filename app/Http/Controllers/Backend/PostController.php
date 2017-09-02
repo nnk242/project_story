@@ -40,4 +40,22 @@ class PostController extends Controller
     public function postCreate(Request $request) {
         return $request->all();
     }
+
+    public function ajaxCreateShortContent(Request $request) {
+        $id = $request->id;
+        $short_content = $request->short_content;
+        $post = Post::find($id);
+        $post->short_content = $short_content;
+        $post->save();
+        return $post;
+    }
+
+    public function ajaxCreateContent(Request $request) {
+        $id = $request->id;
+        $content = $request->content_;
+        $post = Post::find($id);
+        $post->content = $content;
+        $post->save();
+        return $post;
+    }
 }

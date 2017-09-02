@@ -94,8 +94,8 @@ $role_bus = 3;
                             <td>{{$key+1}}</td>
                             <td>{{ str_limit($post->title, $limit = 100, $end='...') }}</td>
                             <td>{!! $post->Type()->first()->name !!}</td>
-                            <td data-toggle="modal" data-target="#myModal-content-{{$key}}" title="Ấn để sửa..." style="cursor: pointer;">{!! str_limit($post->content, $limit = 100, $end = '...') !!}</td>
-                            <td data-toggle="modal" data-target="#myModal-short-content-{{$key}}" title="Ấn để sửa..." style="cursor: pointer;">{!! str_limit($post->short_content, $limit=100, $end = '...') !!}</td>
+                            <td id="content-after-create-{{$post->id}}" data-toggle="modal" data-target="#myModal-content-{{$key}}" title="Ấn để sửa..." style="cursor: pointer;">{!! str_limit($post->content, $limit = 100, $end = '...') !!}</td>
+                            <td id="short-content-after-create-{{$post->id}}" data-toggle="modal" data-target="#myModal-short-content-{{$key}}" title="Ấn để sửa..." style="cursor: pointer;">{!! str_limit($post->short_content, $limit=100, $end = '...') !!}</td>
                             @if(\Illuminate\Support\Facades\Auth::id() == $role_admin || \Illuminate\Support\Facades\Auth::id() == $role_leader)
                                 <td>@foreach(App\User::select('name')->where('id', \Illuminate\Support\Facades\Auth::id())->get() as $val) {{$val->name}} @endforeach</td>
                             @endif
@@ -111,9 +111,9 @@ $role_bus = 3;
                             <td>{{ $post->created_at }}</td>
                         </tr>
                         <!-- Modal content-->
-                        <div class="modal fade content-page" id="myModal-content-{{$key}}" role="dialog">
+                        <div class="modal fade" id="myModal-content-{{$key}}" role="dialog">
                             <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
+                                <div class="modal-content aj-form-page">
                                     <form>
                                         {{csrf_field()}}
                                         <div class="modal-header">
@@ -121,10 +121,10 @@ $role_bus = 3;
                                             <h4 class="modal-title">Sửa Nội dung</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <textarea name="content" id="content-{{$key}}">{!! ($post->content) !!}</textarea>
+                                            <textarea class="aj-text-page" name="content" id="content-{{$key}}">{!! ($post->content) !!}</textarea>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-default">Thay đổi</button>
+                                            <button type="submit" data-id="{{$post->id}}" class="btn btn-default sm-content-page">Thay đổi</button>
                                             <button type="button" class="btn btn-success" data-dismiss="modal">Quay lại</button>
                                         </div>
                                     </form>
@@ -132,9 +132,9 @@ $role_bus = 3;
                             </div>
                         </div>
                         <!-- Modal short content-->
-                        <div class="modal fade short-content-page" id="myModal-short-content-{{$key}}" role="dialog">
+                        <div class="modal fade" id="myModal-short-content-{{$key}}" role="dialog">
                             <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
+                                <div class="modal-content aj-form-page">
                                     <form>
                                         {{csrf_field()}}
                                         <div class="modal-header">
@@ -142,10 +142,10 @@ $role_bus = 3;
                                             <h4 class="modal-title">Sửa Nội dung ngắn</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <textarea name="short-content" id="short-content-{{$key}}">{!! ($post->short_content) !!}</textarea>
+                                            <textarea class="aj-text-page" name="short-content" id="short-content-{{$key}}">{!! ($post->short_content) !!}</textarea>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-default">Thay đổi</button>
+                                            <button type="submit"  data-id="{{$post->id}}" class="btn btn-default sm-short-content-page">Thay đổi</button>
                                             <button type="button" class="btn btn-success" data-dismiss="modal">Quay lại</button>
                                         </div>
                                     </form>
@@ -168,5 +168,57 @@ $role_bus = 3;
             CKEDITOR.replace('content-' + i);
             CKEDITOR.replace('short-content-' + i);
         }
+//short text
+        function TruncateText(text)
+        {
+            if(text.length > 100)
+            {
+                text = text.substring(0, 100) + "...";
+            }
+            return text;
+        }
+//short content
+        $(document).ready(function () {
+            $('.sm-short-content-page').click(function () {
+                var get_id_ckeditor = $(this).closest('.aj-form-page').find('.aj-text-page').attr('id');
+                var id = $(this).data('id');
+                var short_content = CKEDITOR.instances[get_id_ckeditor].getData();
+                $.ajax({
+                    type:'POST',
+                    url: '{{ route('ajax.createShortContent') }}',
+                    data: {"_token": "{{ csrf_token() }}",
+                        'id':id,
+                        'short_content':short_content},
+                    dataType:'JSON',
+                    success: function (rsp) {
+                        alert('Cập nhật truyện thành công!');
+                        $('#short-content-after-create-'+ rsp.id).empty();
+                        $('#short-content-after-create-'+ rsp.id).append(TruncateText(rsp.short_content));
+                    }
+                })
+            })
+        });
+
+        //content
+        $(document).ready(function () {
+            $('.sm-content-page').click(function () {
+                var get_id_ckeditor = $(this).closest('.aj-form-page').find('.aj-text-page').attr('id');
+                var id = $(this).data('id');
+                var content = CKEDITOR.instances[get_id_ckeditor].getData();
+                $.ajax({
+                    type:'POST',
+                    url: '{{ route('ajax.createContent') }}',
+                    data: {"_token": "{{ csrf_token() }}",
+                        'id':id,
+                        'content_':content},
+                    dataType:'JSON',
+                    success: function (rsp) {
+                        alert('Cập nhật truyện thành công!');
+                        $('#content-after-create-'+ rsp.id).empty();
+                        $('#content-after-create-'+ rsp.id).append(TruncateText(rsp.content));
+                    }
+                })
+            })
+        });
     </script>
 @endsection
