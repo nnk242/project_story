@@ -8,37 +8,37 @@
         <fieldset class="form-group">
             <legend>Viết truyện</legend>
         </fieldset>
-        <form method="POST" action="{{route('post.postCreate')}}">
+        <form method="POST" action="{{url('admin/post/postEdit/' . $post->id)}}">
             {{csrf_field()}}
             <div class="form-group">
                 <label for="title">Tiêu đề</label>
-                <input type="text" class="form-control" id="title" name="title" placeholder="Nhập tiêu đề" required>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Nhập tiêu đề" value="{{ $post->title }}" required>
             </div>
             <div class="form-group">
                 <label for="short_content">Nội dung</label>
-                <textarea class="form-control" id="short_content" name="short_content" placeholder="Nhập nội dung ngắn" required></textarea>
+                <textarea class="form-control" id="short_content" name="short_content" placeholder="Nhập nội dung ngắn" required>{!! $post->short_content !!}</textarea>
             </div>
             <div class="form-group">
                 <label for="content">Nội dung ngắn</label>
-                <textarea class="form-control" id="content" name="content_" placeholder="Nhập nội dung" required></textarea>
+                <textarea class="form-control" id="content" name="content_" placeholder="Nhập nội dung" required>{!! $post->content !!}</textarea>
             </div>
             <div class="form-group">
                 <label for="type">Thể loại</label>
                 <select class="form-control" id="type" name="type">
                     @foreach($types as $type)
-                        <option value="{{$type->id}}">{{$type->name}}</option>
+                        <option value="{{$type->id}}" {{ $type->id==$post->type ? 'selected':'' }}>{{$type->name}}</option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group">
                 <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input" name="status" checked value="1">
+                    <input type="checkbox" class="form-check-input" name="status" {{ $post->status==1? 'checked value="1"':'' }}>
                     Trạng thái (Ẩn/hiện của bài viết)
                 </label>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-default">Đăng bài</button>
-                <button type="reset" class="btn btn-warning">Trạng thái rỗng</button>
+                <button type="submit" class="btn btn-default">Thay đổi</button>
+                <button type="reset" class="btn btn-warning">Trạng thái ban đầu</button>
             </div>
         </form>
     </div>

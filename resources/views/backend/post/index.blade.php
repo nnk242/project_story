@@ -91,17 +91,17 @@ $role_bus = 3;
                     <tbody>
                     @foreach($posts as $key=>$post)
                         <tr id="{{$post->id}}" class="selected-page">
-                            <td>{{$key+1}}</td>
+                            <td title="Ngày cập nhật truyện: {{$post->updated_at}}">{{$key+1}}</td>
                             <td>{{ str_limit($post->title, $limit = 100, $end='...') }}</td>
                             <td>{!! $post->Type()->first()->name !!}</td>
-                            <td id="content-after-create-{{$post->id}}" data-toggle="modal" data-target="#myModal-content-{{$key}}" title="Ấn để sửa..." style="cursor: pointer;">{!! str_limit($post->content, $limit = 100, $end = '...') !!}</td>
-                            <td id="short-content-after-create-{{$post->id}}" data-toggle="modal" data-target="#myModal-short-content-{{$key}}" title="Ấn để sửa..." style="cursor: pointer;">{!! str_limit($post->short_content, $limit=100, $end = '...') !!}</td>
+                            <td id="content-after-edit-{{$post->id}}" data-toggle="modal" data-target="#myModal-content-{{$key}}" title="Ấn để sửa..." style="cursor: pointer;">{!! str_limit($post->content, $limit = 100, $end = '...') !!}</td>
+                            <td id="short-content-after-edit-{{$post->id}}" data-toggle="modal" data-target="#myModal-short-content-{{$key}}" title="Ấn để sửa..." style="cursor: pointer;">{!! str_limit($post->short_content, $limit=100, $end = '...') !!}</td>
                             @if(\Illuminate\Support\Facades\Auth::id() == $role_admin || \Illuminate\Support\Facades\Auth::id() == $role_leader)
                                 <td>@foreach(App\User::select('name')->where('id', \Illuminate\Support\Facades\Auth::id())->get() as $val) {{$val->name}} @endforeach</td>
                             @endif
                             <td>
                                 <div class="onoffswitch">
-                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch-{{$key}}" {{$post->status == 1? 'checked':''}}>
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch-{{$key}}" value="{{$post->status}}" {{$post->status == 1? 'checked':''}}>
                                     <label class="onoffswitch-label" for="myonoffswitch-{{$key}}">
                                         <span class="onoffswitch-inner"></span>
                                         <span class="onoffswitch-switch"></span>
@@ -109,6 +109,14 @@ $role_bus = 3;
                                 </div>
                             </td>
                             <td>{{ $post->created_at }}</td>
+                            <td>
+                                <div>
+                                    <a title="Xóa truyện" href="{{url('admin/post/delete/' . $post->id)}}" onclick="return window.confirm('Bạn muốn xóa?')"><span class="fa fa-trash"></span></a>
+                                </div>
+                                <div>
+                                    <a title="Sửa truyện" href="{{url('admin/post/edit/' . $post->id)}}"><span class="fa fa-edit"></span></a>
+                                </div>
+                            </td>
                         </tr>
                         <!-- Modal content-->
                         <div class="modal fade" id="myModal-content-{{$key}}" role="dialog">
@@ -157,6 +165,7 @@ $role_bus = 3;
                 </table>
             </div>
         </div>
+        {!! $posts->render() !!}
     </div>
 
 
@@ -185,15 +194,15 @@ $role_bus = 3;
                 var short_content = CKEDITOR.instances[get_id_ckeditor].getData();
                 $.ajax({
                     type:'POST',
-                    url: '{{ route('ajax.createShortContent') }}',
+                    url: '{{ route('ajax.editShortContent') }}',
                     data: {"_token": "{{ csrf_token() }}",
                         'id':id,
                         'short_content':short_content},
                     dataType:'JSON',
                     success: function (rsp) {
                         alert('Cập nhật truyện thành công!');
-                        $('#short-content-after-create-'+ rsp.id).empty();
-                        $('#short-content-after-create-'+ rsp.id).append(TruncateText(rsp.short_content));
+                        $('#short-content-after-edit-'+ rsp.id).empty();
+                        $('#short-content-after-edit-'+ rsp.id).append(TruncateText(rsp.short_content));
                     }
                 })
             })
@@ -207,18 +216,44 @@ $role_bus = 3;
                 var content = CKEDITOR.instances[get_id_ckeditor].getData();
                 $.ajax({
                     type:'POST',
-                    url: '{{ route('ajax.createContent') }}',
+                    url: '{{ route('ajax.editContent') }}',
                     data: {"_token": "{{ csrf_token() }}",
                         'id':id,
                         'content_':content},
                     dataType:'JSON',
                     success: function (rsp) {
                         alert('Cập nhật truyện thành công!');
-                        $('#content-after-create-'+ rsp.id).empty();
-                        $('#content-after-create-'+ rsp.id).append(TruncateText(rsp.content));
+                        $('#content-after-edit-'+ rsp.id).empty();
+                        $('#content-after-edit-'+ rsp.id).append(TruncateText(rsp.content));
                     }
                 })
             })
+        });
+
+        //status
+        $(document).ready(function () {
+            $('.onoffswitch-checkbox').on('change', function () {
+                if($(this).val() == 1 || $(this).val() == '1') {
+                    $(this).val('0');
+                } else {
+                    $(this).val('1');
+                }
+                var status = $(this).val();
+                var id = $(this).closest('tr').attr('id');
+                console.log(id);
+                $.ajax({
+                    type:'POST',
+                    url: '{{ route('ajax.editStatus') }}',
+                    data: {"_token": "{{ csrf_token() }}",
+                        'id':id,
+                        'status':status},
+                    dataType:'JSON',
+                    success: function (rsp) {
+                        alert('Cập nhật trạng thái thành công!');
+                    }
+                })
+
+            });
         });
     </script>
 @endsection

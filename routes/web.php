@@ -27,7 +27,11 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/', 'Backend\PostController@index')->name('post');
         Route::get('create', 'Backend\PostController@create')->name('post.create');
         Route::post('postCreate', 'Backend\PostController@postCreate')->name('post.postCreate');
-        Route::post('ajaxCreateShortContent', 'Backend\PostController@ajaxCreateShortContent')->name('ajax.createShortContent');
-        Route::post('ajaxCreateContent', 'Backend\PostController@ajaxCreateContent')->name('ajax.createContent');
+        Route::get('edit/{id}', 'Backend\PostController@edit');
+        Route::post('postEdit/{id}', 'Backend\PostController@postEdit');
+        Route::get('delete/{id}', 'Backend\PostController@delete');
+        Route::post('ajaxEditShortContent', 'Backend\PostController@ajaxEditShortContent')->name('ajax.editShortContent');
+        Route::post('ajaxEditContent', 'Backend\PostController@ajaxEditContent')->name('ajax.editContent');
+        Route::post('ajaxEditStatus', 'Backend\PostController@ajaxEditStatus')->name('ajax.editStatus');
     });
 });
