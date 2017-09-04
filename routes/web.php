@@ -11,9 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('frontend.index');
-});
+//Frontend
+
+Route::get('/', 'Frontend\Homecontroller@index');
+Route::get('/{title}', 'Frontend\Homecontroller@story');
 
 Auth::routes();
 

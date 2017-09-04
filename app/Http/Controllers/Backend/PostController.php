@@ -41,8 +41,11 @@ class PostController extends Controller
     }
 
     public function postCreate(Request $request) {
+        date_default_timezone_set("Asia/Ho_Chi_Minh");
+        $count_title_seo = Post::whereTitle_seo(str_replace(' ', '_', $request->title))->count();
         $post = new Post();
         $post->title = $request->title;
+        $count_title_seo > 0 ? $post->title_seo = stripUnicode(str_replace(' ', '_', $request->title) + '_' + time()) : stripUnicode($post->title_seo = str_replace(' ', '_', $request->title));
         $post->short_content = $request->short_content;
         $post->content = $request->content_;
         $post->type = $request->type;
@@ -74,8 +77,10 @@ class PostController extends Controller
     }
 
     public function postEdit($id, Request $request) {
+        $count_title_seo = Post::whereTitle_seo($request->title_seo)->whereId($id)->count();
         $post = Post::find($id);
         $post->title = $request->title;
+        $count_title_seo > 0 ? $post->title_seo = stripUnicode(str_replace(' ', '_', $request->title) + '_' + time()) : stripUnicode($post->title_seo = str_replace(' ', '_', $request->title));
         $post->short_content = $request->short_content;
         $post->content = $request->content_;
         $post->type = $request->type;

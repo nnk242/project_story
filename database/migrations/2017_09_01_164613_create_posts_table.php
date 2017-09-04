@@ -16,8 +16,9 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 255);
+            $table->string('title_seo', 255);
             $table->integer('type')->references('id')->on('types')->default(1);
-            $table->text('content');
+            $table->longText('content');
             $table->text('short_content');
             $table->integer('view')->default(0);
             $table->integer('user_id')->references('id')->on('users');

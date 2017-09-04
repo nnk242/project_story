@@ -9,16 +9,16 @@
                 </p>
                 @foreach($posts as $post)
 
-                <div class="item">
-                    <p data-id="{{$post->id}}"><a href="{{ url($post->title_seo) }}">{{$post->title}}</a></p>
-                    <span>
+                    <div class="item">
+                        <p data-id="{{$post->id}}"><a href="{{ url($post->title_seo) }}">{{$post->title}}</a></p>
+                        <span>
                 <i class="fa fa-eye" aria-hidden="true"></i> {{$post->view}} -
                 <i class="fa fa-clock-o" aria-hidden="true"> <?php date_default_timezone_set("Asia/Ho_Chi_Minh");?>{{ time_elapsed_string($post->created_at) }}</i>
                </span>
-                    <p id="description">
-                        {!! $post->short_content !!}
-                    </p>
-                </div>
+                        <p id="description">
+                            {!! $post->short_content !!}
+                        </p>
+                    </div>
                 @endforeach
 
                 <nav aria-label="paginationStory">
@@ -50,17 +50,27 @@
                         <i class="fa fa-th-list" aria-hidden="true"></i>Danh mục
                     </p>
                     <div id="categories">
-                        @foreach($types as $type)
                         <div id="item-sidebar">
-                            <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i><a href="#">{{$type->name}}</a>
+                            <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i><a href="#">Thể loại 1</a>
                         </div>
-                        @endforeach
+                        <div id="item-sidebar">
+                            <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i><a href="#">Thể loại 2</a>
+                        </div>
+                        <div id="item-sidebar">
+                            <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i><a href="#">Thể loại 3</a>
+                        </div>
+                        <div id="item-sidebar">
+                            <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i><a href="#">Thể loại 4</a>
+                        </div>
+                        <div id="item-sidebar">
+                            <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i><a href="#">Thể loại 5</a>
+                        </div>
                     </div>
                 </div>
 
                 <div class="top-story">
                     <p id="sidebar-title">
-                        <i class="fa fa-bar-chart" aria-hidden="true"></i>Top truyện tháng
+                        <i class="fa fa-bar-chart" aria-hidden="true"></i>Top truyện
                     </p>
                     <div id="categories">
                         <div id="item-sidebar">
@@ -121,10 +131,7 @@
             </div>
         </div>
     </main>
-    <footer>
-        <span class="text-right">Copyright &copy; XXX</span>
-    </footer>
-    @endsection
+@endsection
 {{--</div>--}}
 
 {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--}}
