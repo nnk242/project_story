@@ -45,7 +45,7 @@
                 <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="">
+                            <a href="{{route('admin')}}">
                                 <i class="fa fa-tachometer" aria-hidden="true"></i>
                                 <span>Tổng quan</span>
                             </a>
@@ -70,7 +70,7 @@
                             <li>
                                 <a href="{{ url('admin/user') }}">
                                     <i class="fa fa-address-book-o" aria-hidden="true"></i>
-                                    <span>Quản lý tài khoản</span>
+                                    <span>Tài khoản</span>
                                 </a>
                             </li>
 
@@ -84,19 +84,6 @@
                             </li>
                         @else
                         @endif
-                        <li class="dropdown show-on-hover">
-                            <a href="#thống kê" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-bar-chart-o"></i> <span>Thống kê </span><i class="fa fa-sort-desc"></i></a>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="{{route('statistical.view')}}"><i class="fa fa-eye" aria-hidden="true"></i> Lượt xem truyện</a>
-                                </li>
-                                <li>
-                                    <a href="{{route('statistical.access')}}"><i class="fa fa-truck" aria-hidden="true"></i> Lượt truy cập</a>
-                                </li>
-                            </ul>
-                        </li>
                     </ul>
             @else
             @endif

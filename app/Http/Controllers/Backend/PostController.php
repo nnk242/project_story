@@ -54,9 +54,23 @@ class PostController extends Controller
 
     //Sửa truyện
     public function edit($id) {
-        $types = Type::all();
-        $post = Post::find($id);
-        return view('backend.post.edit', compact('types', 'post'));
+        $role = '';
+        $user_id_ = Post::with('User')->whereId($id)->get();
+        $ar_user_id = Post::whereId($id)->pluck('user_id');
+        foreach ($user_id_ as $val) {
+            if ($val->User()->first() == null) {
+                $role = 1;
+            } else {
+                $role =  $val->User()->first()->role;
+            }
+        }
+        if ($role == $this->role_admin || $role == $this->role_leader) {
+            $types = Type::all();
+            $post = Post::find($id);
+            return view('backend.post.edit', compact('types', 'post'));
+        } elseif ($ar_user_id['id'] == Auth::id() &&  $role == $this->role_bus) {} else {
+            return redirect(route('post'))->with('er', 'Không phải truyện của bạn...');
+        }
     }
 
     public function postEdit($id, Request $request) {
@@ -73,9 +87,24 @@ class PostController extends Controller
 
     //xóa truyện
     public function delete($id) {
-        $post = Post::find($id);
-        $post->delete();
-        return redirect(route('post'))->with('mes', 'Đã xóa truyện...');
+        $role = '';
+        $user_id_ = Post::with('User')->whereId($id)->get();
+        $ar_user_id = Post::whereId($id)->pluck('user_id');
+        foreach ($user_id_ as $val) {
+            if ($val->User()->first() == null) {
+                $role = 1;
+            } else {
+                $role =  $val->User()->first()->role;
+            }
+        }
+        if ($role == $this->role_admin || $role == $this->role_leader) {
+            $post = Post::find($id);
+            $post->delete();
+            return redirect(route('post'))->with('mes', 'Đã xóa truyện...');
+        } elseif ($ar_user_id['id'] == Auth::id() &&  $role == $this->role_bus) {} else {
+            return redirect(route('post'))->with('er', 'Không phải truyện của bạn...');
+        }
+
     }
 
     public function ajaxEditShortContent(Request $request) {

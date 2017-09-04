@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.backend')
 <?php
 $role_admin = 1;
 $role_leader = 2;
@@ -61,6 +61,13 @@ $role_bus = 3;
         <div class="mes-page" style="position: absolute;z-index: 1;opacity: 0.9;left: 30%">
             <div class="alert alert-success" role="alert">
                 <strong>Thành công!</strong> {{session('mes')}}.
+            </div>
+        </div>
+    @endif
+    @if(session('er'))
+        <div class="mes-page" style="position: absolute;z-index: 1;opacity: 0.9;left: 30%">
+            <div class="alert alert-danger" role="alert">
+                <strong>Thành công!</strong> {{session('er')}}.
             </div>
         </div>
     @endif

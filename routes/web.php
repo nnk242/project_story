@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('frontend.index');
 });
 
 Auth::routes();
@@ -20,10 +20,12 @@ Auth::routes();
 //Backend
 
 Route::group(['prefix' => 'admin'], function () {
-    Route::get('/', 'HomeController@index')->name('admin');
-    Route::get('user', 'UserController@index')->name('user');
+//    dashboard
+    Route::get('/', 'Backend\HomeController@index')->name('admin');
+//    quản lý tài khoản
+    Route::get('user', 'Backend\UserController@index')->name('user')->middleware('user');
 //quản lý truyện
-    Route::group(['prefix' => 'post'], function () {
+    Route::group(['prefix' => 'post', 'middleware' => 'post'], function () {
         Route::get('/', 'Backend\PostController@index')->name('post');
         Route::get('create', 'Backend\PostController@create')->name('post.create');
         Route::post('postCreate', 'Backend\PostController@postCreate')->name('post.postCreate');
@@ -34,9 +36,5 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('ajaxEditContent', 'Backend\PostController@ajaxEditContent')->name('ajax.editContent');
         Route::post('ajaxEditStatus', 'Backend\PostController@ajaxEditStatus')->name('ajax.editStatus');
     });
-//thống kê
-    Route::group(['prefix' => 'statistical'], function () {
-        Route::get('view', 'Backend\StatisticalController@view')->name('statistical.view');
-        Route::get('access', 'Backend\StatisticalController@access')->name('statistical.access');
-    });
+
 });

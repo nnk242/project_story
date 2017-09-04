@@ -11,5 +11,8 @@ class Post extends Model
     public function Type() {
         return $this->belongsTo(Type::class, 'type', 'id');
     }
+    public function User() {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 
 }

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.backend')
 @section('content')
     <div class="col-md-6 col-sm-6 col-xs-12">
         <h4>Số truyện đăng của bạn trong tuần: </h4>
