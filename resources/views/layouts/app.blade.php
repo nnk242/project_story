@@ -84,18 +84,16 @@
                             </li>
                         @else
                         @endif
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-bar-chart-o"></i> <span>Thống kê </span></a>
+                        <li class="dropdown show-on-hover">
+                            <a href="#thống kê" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-bar-chart-o"></i> <span>Thống kê </span><i class="fa fa-sort-desc"></i></a>
+                            </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="">Truyện xem nhiều nhất</a>
+                                    <a href="{{route('statistical.view')}}"><i class="fa fa-eye" aria-hidden="true"></i> Lượt xem truyện</a>
                                 </li>
                                 <li>
-                                    <a href="">Lượt online</a>
-                                </li>
-                                <li>
-                                    <a href="">Xu hướng</a>
+                                    <a href="{{route('statistical.access')}}"><i class="fa fa-truck" aria-hidden="true"></i> Lượt truy cập</a>
                                 </li>
                             </ul>
                         </li>

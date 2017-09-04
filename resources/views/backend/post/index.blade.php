@@ -57,7 +57,14 @@ $role_bus = 3;
 @endsection
 
 @section('content')
-    <div class="col-md-2 col-sm-2">
+    @if(session('mes'))
+        <div class="mes-page" style="position: absolute;z-index: 1;opacity: 0.9;left: 30%">
+            <div class="alert alert-success" role="alert">
+                <strong>Thành công!</strong> {{session('mes')}}.
+            </div>
+        </div>
+    @endif
+    <div class="col-md-2 col-sm-2 col-xs-12">
         <a href="{{route('post.create')}}">
             <button class="btn btn-success"><span class="fa fa-plus"></span>&nbsp;&nbsp;Thêm truyện</button>
         </a>
@@ -203,6 +210,9 @@ $role_bus = 3;
                         alert('Cập nhật truyện thành công!');
                         $('#short-content-after-edit-'+ rsp.id).empty();
                         $('#short-content-after-edit-'+ rsp.id).append(TruncateText(rsp.short_content));
+                    },
+                    error: function () {
+                        location.reload();
                     }
                 })
             })
@@ -225,6 +235,9 @@ $role_bus = 3;
                         alert('Cập nhật truyện thành công!');
                         $('#content-after-edit-'+ rsp.id).empty();
                         $('#content-after-edit-'+ rsp.id).append(TruncateText(rsp.content));
+                    },
+                    error: function () {
+                        location.reload();
                     }
                 })
             })
@@ -250,10 +263,16 @@ $role_bus = 3;
                     dataType:'JSON',
                     success: function (rsp) {
                         alert('Cập nhật trạng thái thành công!');
+                    },
+                    error: function () {
+                        location.reload();
                     }
                 })
 
             });
         });
+        setTimeout(function () {
+            $('.mes-page').empty();
+        }, 1500);
     </script>
 @endsection

@@ -22,7 +22,7 @@ Auth::routes();
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', 'HomeController@index')->name('admin');
     Route::get('user', 'UserController@index')->name('user');
-
+//quản lý truyện
     Route::group(['prefix' => 'post'], function () {
         Route::get('/', 'Backend\PostController@index')->name('post');
         Route::get('create', 'Backend\PostController@create')->name('post.create');
@@ -33,5 +33,10 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('ajaxEditShortContent', 'Backend\PostController@ajaxEditShortContent')->name('ajax.editShortContent');
         Route::post('ajaxEditContent', 'Backend\PostController@ajaxEditContent')->name('ajax.editContent');
         Route::post('ajaxEditStatus', 'Backend\PostController@ajaxEditStatus')->name('ajax.editStatus');
+    });
+//thống kê
+    Route::group(['prefix' => 'statistical'], function () {
+        Route::get('view', 'Backend\StatisticalController@view')->name('statistical.view');
+        Route::get('access', 'Backend\StatisticalController@access')->name('statistical.access');
     });
 });

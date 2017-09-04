@@ -49,7 +49,7 @@ class PostController extends Controller
         $post->user_id = Auth::id();
         $request->status == '1' || $request->status == 1 ? $post->status = 1 : $post->status = 0;
         $post->save();
-        return redirect(route('post'));
+        return redirect(route('post'))->with('mes', 'Đã thêm truyện...');
     }
 
     //Sửa truyện
@@ -68,14 +68,14 @@ class PostController extends Controller
         $post->user_id = Auth::id();
         $request->status == '1' || $request->status == 1 ? $post->status = 1 : $post->status = 0;
         $post->save();
-        return redirect(route('post'));
+        return redirect(route('post'))->with('mes', 'Đã sửa truyện...');
     }
 
     //xóa truyện
     public function delete($id) {
         $post = Post::find($id);
         $post->delete();
-        return redirect(route('post'));
+        return redirect(route('post'))->with('mes', 'Đã xóa truyện...');
     }
 
     public function ajaxEditShortContent(Request $request) {
